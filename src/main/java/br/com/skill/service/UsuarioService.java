@@ -114,15 +114,24 @@ public class UsuarioService {
 		return new UsuarioSkillResponseDTO(usuarioSkillRepository.save(usuarioSkill));
 	}
 	
-	public ResponseEntity<String> desassociarSkill(AtualizarNivelDTO request){
-		Optional<Usuario> usuarioOpt = repository.findById(request.getUsuarioId());
-		Optional<Skill> skillOpt = skillRepository.findById(request.getSkillId());
+	public UsuarioResponseDTO desassociarSkill(Integer id, Integer SkillId){
+		Optional<Usuario> usuarioOpt = repository.findById(id);
+		Optional<Skill> skillOpt = skillRepository.findById(SkillId);
 		if(usuarioOpt.isEmpty() || skillOpt.isEmpty()) throw new ResourceNotFoundException("Não foi possível atualizar o nível.");
 		Optional<UsuarioSkill> usuarioSkillOpt = 
 				usuarioSkillRepository.findByIdUsuarioAndIdSkill(usuarioOpt.get(), skillOpt.get());
 		if(usuarioSkillOpt.isEmpty()) throw new ResourceNotFoundException("O usuário não possui a skill especificada.");
 		usuarioSkillRepository.deleteBySkillIdAndUsuarioId(skillOpt.get().getId(),usuarioOpt.get().getId());
-		return ResponseEntity.ok().body("A skill: " + skillOpt.get().getNome()
-				+ "Foi removida do usuário com sucesso.");
+		 
+		Usuario usuario = usuarioOpt.get();
+		Skill skill = skillOpt.get();
+		 
+	    Set<UsuarioSkill> usuarioSkills = usuario.getSkills();
+	    usuarioSkills.removeIf(us -> us.getId().getSkill().getId().equals(skill.getId()));
+	    usuario.setSkills(usuarioSkills);
+	    
+	    
+	    repository.save(usuario);
+		return new UsuarioResponseDTO(usuario);
 	}
 }

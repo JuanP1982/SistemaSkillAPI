@@ -24,6 +24,7 @@ public class UsuarioResponseDTO {
 		if (!u.getSkills().isEmpty()) {
 			this.skills = u.getSkills().stream().map(s -> new UsuarioSkillResponseDTO(s)).collect(Collectors.toList());
 		}
+			
 	}
 
 	public Integer getId() {

@@ -14,8 +14,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -34,8 +32,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 		return super.handleExceptionInternal(ex, er, headers, status, request);
 	}
 
-	@ExceptionHandler(HttpMessageNotReadableException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
@@ -44,7 +41,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 		return super.handleExceptionInternal(ex, er, headers, status, request);
 	}
 	@ExceptionHandler(ResourceNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
 	public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex){
 		
 		List<String> erros = new ArrayList<>();
@@ -56,7 +52,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 		
 	}
 	@ExceptionHandler(EmailException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> handleEmailException(EmailException ex){	
 		List<String> erros = new ArrayList<>();
 		erros.add(ex.getMessage());
@@ -68,8 +63,8 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	}
 	
+
 	@ExceptionHandler(LoginIncorretoException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public ResponseEntity<Object> hadleLoginIncorretoException(LoginIncorretoException ex){
 		List<String> erros = new ArrayList<>();
 		erros.add(ex.getMessage());

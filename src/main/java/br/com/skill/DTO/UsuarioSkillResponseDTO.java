@@ -4,8 +4,9 @@ import br.com.skill.entity.Skill;
 import br.com.skill.entity.UsuarioSkill;
 
 public class UsuarioSkillResponseDTO {
-	private Skill skill;
 	private Integer nivel;
+	private Skill skill;
+	
 	
 	public UsuarioSkillResponseDTO(UsuarioSkill user) {
 		this.nivel = user.getNivel();

@@ -31,6 +31,7 @@ public class SecurityConfiguration {
 	                    .requestMatchers("/swagger-ui/index.html").permitAll()
 	                    .requestMatchers("/swagger-ui/**").permitAll()
 	                    .requestMatchers("/swagger-ui.html").permitAll()
+	                    .requestMatchers("/skills/{id}/foto").permitAll()
 	                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
 	                    .requestMatchers(HttpMethod.POST, "/usuarios/cadastrar").permitAll()
 	                    .requestMatchers(HttpMethod.POST, "/skills/cadastrar").hasRole("ADMIN")

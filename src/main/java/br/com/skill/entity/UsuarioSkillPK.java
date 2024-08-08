@@ -45,6 +45,11 @@ public class UsuarioSkillPK implements Serializable{
 	public void setSkill(Skill skill) {
 		this.skill = skill;
 	}
+
+	@Override
+	public String toString() {
+		return "UsuarioSkillPK [usuario=" + usuario + ", skill=" + skill + "]";
+	}
 	
 	
 	

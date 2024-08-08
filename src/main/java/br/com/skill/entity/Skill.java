@@ -12,7 +12,7 @@ public class Skill {
 	private Integer id;
 	
 	private String nome;
-	
+	private String url;
 	private String descricao;
 
 	public Integer getId() {
@@ -38,6 +38,16 @@ public class Skill {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+	
 	
 	
 	

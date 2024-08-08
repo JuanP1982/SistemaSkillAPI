@@ -72,9 +72,9 @@ public class UsuarioController {
 		return service.atualizarNota(infoNivel);
 	}
 	
-	@DeleteMapping("/{id}/removerskill")
-	public ResponseEntity<String> desassociarSkill(@PathVariable Integer id, @RequestBody AtualizarNivelDTO infoNivel){
-		return service.desassociarSkill(infoNivel);
+	@DeleteMapping("/{id}/removerskill/{skillId}")
+	public UsuarioResponseDTO desassociarSkill(@PathVariable Integer id, @PathVariable Integer skillId){
+		return service.desassociarSkill(id,skillId);
 	}
 	
 }

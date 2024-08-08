@@ -35,6 +35,12 @@ public class UsuarioSkill {
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
+
+	@Override
+	public String toString() {
+		return "UsuarioSkill [id=" + id + ", nivel=" + nivel + "]";
+	}
+	
 	
 	
 }
