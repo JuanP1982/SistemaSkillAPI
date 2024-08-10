@@ -35,7 +35,7 @@ public class SkillService {
 	}
 	
 	public Skill inserirSkill(Skill skill, MultipartFile file) throws IOException {
-		if(repository.findByNome(skill.getNome()) != null) throw new RuntimeException("Tratar skill já existente");
+		if(repository.findByNome(skill.getNome()) != null) throw new RuntimeException("A skill ja existe no banco de dados");
 		repository.save(skill);
 		if(file != null && !file.isEmpty()) {
 			fotoService.inserirFoto(skill, file);
@@ -58,7 +58,7 @@ public class SkillService {
 	}
 	
 	public ResponseEntity<String> deletarSkill(Integer id){
-		if(repository.findById(id).isEmpty()) throw new ResourceNotFoundException("Skill não encontrada.");
+		if(repository.findById(id).isEmpty()) throw new ResourceNotFoundException("Skill não encontrada!");
 		fotoService.deletarFoto(id);
 		repository.deleteById(id);
 		return ResponseEntity.status(HttpStatus.OK).body("A skill foi deletada com sucesso!");

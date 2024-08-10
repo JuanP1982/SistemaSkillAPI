@@ -52,10 +52,10 @@ public class UsuarioController {
 		return service.associarSkill(usuarioSkill);
 	}
 	
-	@PostMapping("/login")
-	public UsuarioResponseDTO autenticar(@RequestBody UsuarioRequestDTO userInfo)  {
-		return service.autenticar(userInfo);
-	}
+//	@PostMapping("/login")
+//	public UsuarioResponseDTO autenticar(@RequestBody UsuarioRequestDTO userInfo)  {
+//		return service.autenticar(userInfo);
+//	}
 	
 	@GetMapping("/{id}")
 	public UsuarioResponseDTO buscarId(@PathVariable Integer id) {

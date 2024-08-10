@@ -3,13 +3,17 @@ package br.com.skill.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.application.exceptions.LoginIncorretoException;
+
 import br.com.skill.repository.UsuarioRepository;
+import ch.qos.logback.core.status.ErrorStatus;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,12 +41,13 @@ public class SecurityFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             filterChain.doFilter(request, response);
-        } catch (Exception e) {
+        
+        }catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write(e.getMessage());
+        
         }
     }
-
     private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
         if (authHeader == null) return null;

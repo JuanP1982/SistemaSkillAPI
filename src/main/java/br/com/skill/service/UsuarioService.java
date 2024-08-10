@@ -45,7 +45,7 @@ public class UsuarioService {
 		return usuarios.stream().map((u) -> new UsuarioResponseDTO(u)).collect(Collectors.toList());
 	}
 	
-	public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuario) throws Exception {
+	public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuario)  {
 		if(repository.findByEmail(usuario.getEmail()).isPresent()) throw new EmailException("Email já existente no sistema!");
 		Usuario usuarioSave = new Usuario();
 		usuarioSave.setEmail(usuario.getEmail());
@@ -82,18 +82,18 @@ public class UsuarioService {
 		return new UsuarioResponseDTO(repository.save(usuario));
 	}
 	
-	public UsuarioResponseDTO autenticar(UsuarioRequestDTO login) {
-		   Optional<Usuario> usuario = repository.findByEmail(login.getEmail());
-		   
-		    if (usuario.isPresent() && encoder.matches(login.getSenha(), usuario.get().getSenha())) {
-		    	return new UsuarioResponseDTO(usuario.get());
-		    }else if (usuario.isPresent() && !encoder.matches(login.getSenha(), usuario.get().getSenha())){
-		    	
-		    	throw new LoginIncorretoException();
-		    }else {
-		    	throw new ResourceNotFoundException("Usuario não encontrado!");
-		    }
-		}
+//	public UsuarioResponseDTO autenticar(UsuarioRequestDTO login) {
+//		   Optional<Usuario> usuario = repository.findByEmail(login.getEmail());
+//		   
+//		    if (usuario.isPresent() && encoder.matches(login.getSenha(), usuario.get().getSenha())) {
+//		    	return new UsuarioResponseDTO(usuario.get());
+//		    }else if (usuario.isPresent() && !encoder.matches(login.getSenha(), usuario.get().getSenha())){
+//		    	
+//		    	throw new LoginIncorretoException();
+//		    }else {
+//		    	throw new ResourceNotFoundException("Usuario não encontrado!");
+//		    }
+//		}
 	
 	public List<UsuarioSkillResponseDTO> mostrarSkills(Integer id) {
 		Optional<Usuario> usuario = repository.findById(id);
@@ -104,11 +104,11 @@ public class UsuarioService {
 	public UsuarioSkillResponseDTO atualizarNota(AtualizarNivelDTO request){
 		Optional<Usuario> usuarioOpt = repository.findById(request.getUsuarioId());
 		Optional<Skill> skillOpt = skillRepository.findById(request.getSkillId());
-		if(usuarioOpt.isEmpty() || skillOpt.isEmpty()) throw new ResourceNotFoundException("Não foi possível atualizar o nível.");
+		if(usuarioOpt.isEmpty() || skillOpt.isEmpty()) throw new ResourceNotFoundException("Não foi possivel atualizar o nivel.");
 		
 		Optional<UsuarioSkill> usuarioSkillOpt = 
 				usuarioSkillRepository.findByIdUsuarioAndIdSkill(usuarioOpt.get(), skillOpt.get());
-		if(usuarioSkillOpt.isEmpty()) throw new ResourceNotFoundException("O usuário não possui a skill especificada.");
+		if(usuarioSkillOpt.isEmpty()) throw new ResourceNotFoundException("O usuario não possui a skill especificada.");
 		UsuarioSkill usuarioSkill = usuarioSkillOpt.get();
 		usuarioSkill.setNivel(request.getNivel());
 		return new UsuarioSkillResponseDTO(usuarioSkillRepository.save(usuarioSkill));
@@ -117,10 +117,10 @@ public class UsuarioService {
 	public UsuarioResponseDTO desassociarSkill(Integer id, Integer SkillId){
 		Optional<Usuario> usuarioOpt = repository.findById(id);
 		Optional<Skill> skillOpt = skillRepository.findById(SkillId);
-		if(usuarioOpt.isEmpty() || skillOpt.isEmpty()) throw new ResourceNotFoundException("Não foi possível atualizar o nível.");
+		if(usuarioOpt.isEmpty() || skillOpt.isEmpty()) throw new ResourceNotFoundException("Não foi possível atualizar o nivel.");
 		Optional<UsuarioSkill> usuarioSkillOpt = 
 				usuarioSkillRepository.findByIdUsuarioAndIdSkill(usuarioOpt.get(), skillOpt.get());
-		if(usuarioSkillOpt.isEmpty()) throw new ResourceNotFoundException("O usuário não possui a skill especificada.");
+		if(usuarioSkillOpt.isEmpty()) throw new ResourceNotFoundException("O usuario nao possui a skill especificada.");
 		usuarioSkillRepository.deleteBySkillIdAndUsuarioId(skillOpt.get().getId(),usuarioOpt.get().getId());
 		 
 		Usuario usuario = usuarioOpt.get();

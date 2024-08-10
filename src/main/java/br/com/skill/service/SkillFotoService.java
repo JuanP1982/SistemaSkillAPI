@@ -32,7 +32,7 @@ public class SkillFotoService {
 		Skill skill = new Skill();
 		skill.setId(id);
 		Optional<SkillFoto> foto = repository.findBySkill(skill);
-		if(!foto.isPresent()) throw new RuntimeException("A foto não está associada a skill especificada.");
+		if(!foto.isPresent()) throw new RuntimeException("A foto não esta associada a skill especificada.");
 		return foto.get();
 	}
 	

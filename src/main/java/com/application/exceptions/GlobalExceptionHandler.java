@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,7 +19,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -28,7 +29,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 			erros.add(f.getField() + ":" + f.getDefaultMessage());
 		}
 
-		ErroResposta er = new ErroResposta(status.value(), "Existem campos inválidos", LocalDateTime.now(), erros);
+		ErroResposta er = new ErroResposta(status.value(), "Existem campos invalidos", LocalDateTime.now(), erros);
 		return super.handleExceptionInternal(ex, er, headers, status, request);
 	}
 
@@ -36,7 +37,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
-		ErroResposta er = new ErroResposta(status.value(), "Campos inválidos foram inseridos, favor verificar",
+		ErroResposta er = new ErroResposta(status.value(), "Campos invalidos foram inseridos, favor verificar",
 				LocalDateTime.now(), null);
 		return super.handleExceptionInternal(ex, er, headers, status, request);
 	}
@@ -73,4 +74,14 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler{
 				LocalDateTime.now(), erros);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(er);
 	}
+	
+//	@ExceptionHandler(LoginIncorretoException.class)
+//    public ResponseEntity<String> handleLoginIncorretoException(LoginIncorretoException ex) {
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+//    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthenticationException(AuthenticationException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Token invalido ou expirado.");
+    }
 }
