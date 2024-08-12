@@ -1,0 +1,42 @@
+CREATE TABLE Usuario (
+	id SERIAL PRIMARY KEY,
+	email VARCHAR(255) UNIQUE NOT NULL,
+	senha VARCHAR(255) NOT NULL,
+	role SMALLINT,
+	criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE skill (
+ 	id SERIAL PRIMARY KEY,
+	nome VARCHAR(255) UNIQUE NOT NULL,
+	descricao VARCHAR(255) NOT NULL
+	url VARCHAR(255),
+);
+
+CREATE TABLE skill_foto (
+	id SERIAL PRIMARY KEY,
+	nome VARCHAR(255),
+	tipo VARCHAR(255),
+	dados OID,
+	skill_id INT NOT NULL,
+	CONSTRAINT fk_skill
+	FOREIGN KEY (skill_id)
+	REFERENCES skill(id)
+	ON DELETE CASCADE
+)
+
+CREATE TABLE usuario_skill(
+	id SERIAL PRIMARY KEY,
+	nivel INT,
+	usuario_id INT NOT NULL,
+	skill_id INT NOT NULL,
+	criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT fk_usuario
+		FOREIGN KEY(usuario_id)
+		REFERENCES usuario(id)
+		ON DELETE CASCADE,
+	CONSTRAINT fk_skill
+		FOREIGN KEY(skill_id)
+		REFERENCES skill(id)
+		ON DELETE CASCADE
+);

@@ -1,4 +1,4 @@
-package com.application.exceptions;
+package br.com.skill.exceptions;
 
 public class EmailException extends RuntimeException {
 

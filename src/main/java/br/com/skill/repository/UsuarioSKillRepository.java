@@ -20,5 +20,10 @@ public interface UsuarioSKillRepository extends JpaRepository<UsuarioSkill, Usua
     @Query("DELETE FROM UsuarioSkill us WHERE us.id.skill.id = :skillId AND us.id.usuario.id = :usuarioId")
 	void deleteBySkillIdAndUsuarioId(@Param("skillId") Integer skillId, @Param("usuarioId") Integer usuarioId);
 	
+	@Transactional
+    @Modifying
+    @Query("DELETE FROM UsuarioSkill us WHERE us.id.skill.id = :skillId")
+    void deleteBySkillId(@Param("skillId") Integer skillId);
+	
 	Optional<UsuarioSkill> findByIdUsuarioAndIdSkill(Usuario usuario, Skill skill);
 }

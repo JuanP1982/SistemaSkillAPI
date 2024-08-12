@@ -10,10 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.application.exceptions.EmailException;
-import com.application.exceptions.LoginIncorretoException;
-import com.application.exceptions.ResourceNotFoundException;
-
 import br.com.skill.DTO.AtualizarNivelDTO;
 import br.com.skill.DTO.UsuarioRequestDTO;
 import br.com.skill.DTO.UsuarioResponseDTO;
@@ -22,6 +18,9 @@ import br.com.skill.DTO.UsuarioSkillResponseDTO;
 import br.com.skill.entity.Skill;
 import br.com.skill.entity.Usuario;
 import br.com.skill.entity.UsuarioSkill;
+import br.com.skill.exceptions.EmailException;
+import br.com.skill.exceptions.LoginIncorretoException;
+import br.com.skill.exceptions.ResourceNotFoundException;
 import br.com.skill.repository.SkillRepository;
 import br.com.skill.repository.UsuarioRepository;
 import br.com.skill.repository.UsuarioSKillRepository;
@@ -48,7 +47,7 @@ public class UsuarioService {
 	public UsuarioResponseDTO cadastrarUsuario(UsuarioRequestDTO usuario)  {
 		if(repository.findByEmail(usuario.getEmail()).isPresent()) throw new EmailException("Email já existente no sistema!");
 		Usuario usuarioSave = new Usuario();
-		usuarioSave.setEmail(usuario.getEmail());
+		usuarioSave.setEmail(usuario.getEmail().trim().toLowerCase());
 		usuarioSave.setSenha(encoder.encode(usuario.getSenha()));
 		usuarioSave.setRole(usuario.getRole());
 		
@@ -57,7 +56,7 @@ public class UsuarioService {
 	
 	public UsuarioResponseDTO buscarPorId(Integer id) {
 		Optional<Usuario> usuario = repository.findById(id);
-		if(usuario.isEmpty()) throw new RuntimeException("Tratar usuário não encontrado");
+		if(usuario.isEmpty()) throw new RuntimeException("Usuário não encontrado");
 		return new UsuarioResponseDTO(usuario.get());
 	}
 	

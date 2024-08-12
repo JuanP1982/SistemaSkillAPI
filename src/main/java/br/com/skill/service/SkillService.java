@@ -13,10 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.application.exceptions.ResourceNotFoundException;
-
 import br.com.skill.entity.Skill;
+import br.com.skill.exceptions.ResourceNotFoundException;
 import br.com.skill.repository.SkillRepository;
+import br.com.skill.repository.UsuarioSKillRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class SkillService {
@@ -26,12 +27,15 @@ public class SkillService {
 	@Autowired
 	private SkillFotoService fotoService;
 	
+	@Autowired
+	private UsuarioSKillRepository userSkillRepository;
+	
 	public List<Skill> listarSkills(){
 		return repository.findAll();
 	}
 	
 	public Skill buscarId(Integer id){
-		return repository.findById(id).orElseThrow();
+		return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Skill não encontrada!"));
 	}
 	
 	public Skill inserirSkill(Skill skill, MultipartFile file) throws IOException {
@@ -57,8 +61,10 @@ public class SkillService {
 		return ResponseEntity.status(HttpStatus.OK).body(skillOpt.get());
 	}
 	
+	@Transactional
 	public ResponseEntity<String> deletarSkill(Integer id){
 		if(repository.findById(id).isEmpty()) throw new ResourceNotFoundException("Skill não encontrada!");
+		userSkillRepository.deleteBySkillId(id);
 		fotoService.deletarFoto(id);
 		repository.deleteById(id);
 		return ResponseEntity.status(HttpStatus.OK).body("A skill foi deletada com sucesso!");

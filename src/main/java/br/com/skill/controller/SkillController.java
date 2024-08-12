@@ -16,6 +16,7 @@ import br.com.skill.entity.Skill;
 import br.com.skill.entity.SkillFoto;
 import br.com.skill.service.SkillFotoService;
 import br.com.skill.service.SkillService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,16 +42,19 @@ public class SkillController {
 	private SkillFotoService fotoService;
 	
 	@GetMapping()
+	@Operation(summary = "Metodo para listar todas as skills")
 	public List<Skill> getSkills() {
 		return service.listarSkills();
 	}
 	
 	@GetMapping("/{id}")
+	@Operation(summary = "Metodo para buscar uma skill pelo id")
 	public Skill getSkillId(@PathVariable Integer id) {
 		return service.buscarId(id);
 	}
 	
 	@GetMapping("/{id}/foto")
+	@Operation(summary = "Metodo para buscar a foto de uma skill específica")
 	public ResponseEntity<byte[]> buscarFoto(@PathVariable Integer id){
 		SkillFoto foto = fotoService.buscar(id);
 		HttpHeaders headers = new HttpHeaders();
@@ -60,16 +64,19 @@ public class SkillController {
 	}
 	
 	@PostMapping(path = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "Metodo para inserir uma nova skill")
 	public Skill inserirSkill(@RequestPart Skill skill, @RequestPart MultipartFile file) throws IOException {
 		return service.inserirSkill(skill,file);
 	}
 	
 	@PutMapping(path = "/{id}" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@Operation(summary = "Metodo para listar todas as skills")
 	public ResponseEntity<Skill> atualizarSkill(@PathVariable Integer id, @RequestPart Skill skill, @RequestPart(required = false) MultipartFile file) throws IOException {
 		return service.atualizarSkill(id, file, skill);
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Metodo para deletar uma skill")
 	public ResponseEntity<String> deletarSkill(@PathVariable Integer id){
 		return service.deletarSkill(id);
 	}

@@ -11,6 +11,7 @@ import br.com.skill.entity.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	Optional<Usuario> findByEmail(String email);
+	
 	@Query("SELECT u FROM Usuario u WHERE u.email = :email")
-	UserDetails findByEmailUserDetails(@Param("email")String email);
+	Optional<UserDetails> findByEmailUserDetails(@Param("email")String email);
 }
